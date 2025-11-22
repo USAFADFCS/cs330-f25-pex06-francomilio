@@ -12,7 +12,7 @@ unKnot tripCode
    | null tripCode = "unknot"
 -- | typeIExists tripCode = show (typeIMove [] tripCode)
    | typeIIExists tripCode = show (typeIIMove [] tripCode)
-   | typeIIWrapExists tripCode = show (typeIIWrapMove [] tripCode)
+   | typeIIWrapExists tripCode = show (typeIIMove [] (wrapDat tripCode))
    | otherwise = "tangle - resulting trip code: " ++ (show tripCode)
 
 typeIExists :: [(Char, Char)] -> Bool
@@ -63,22 +63,25 @@ typeIIExistsWrapHelper list ou letO letT
    | (snd(head list) /= ou) && (snd(head list) == snd(head(tail list)) && ((fst(head list) == letO) && (fst(head(tail list)) == letT))) = True
    | otherwise = typeIIExistsHelper (tail list) ou letO letT
 
-typeIIWrapMove:: [(Char, Char)] -> [(Char, Char)] -> [(Char, Char)]
-typeIIWrapMove tripNew tripCode
-   | length tripCode <= 4 = allButLast [] tripNew
-   | snd(head tripCode) == snd(last tripCode) = tripNew ++ typeIIWrapMoveHelper [] (tail tripCode) (snd(head tripCode)) (fst(head tripCode)) (fst(last tripCode))
-   | otherwise = typeIIWrapMove (tripNew ++ [head tripCode]) (tail tripCode)
+-- typeIIWrapMove:: [(Char, Char)] -> [(Char, Char)] -> [(Char, Char)]
+-- typeIIWrapMove tripNew tripCode
+--    | length tripCode <= 4 = allButLast [] tripNew
+--    | snd(head tripCode) == snd(last tripCode) = tripNew ++ typeIIWrapMoveHelper [] (tail tripCode) (snd(head tripCode)) (fst(head tripCode)) (fst(last tripCode))
+--    | otherwise = typeIIWrapMove (tripNew ++ [head tripCode]) (tail tripCode)
 
-typeIIWrapMoveHelper :: [(Char, Char)] -> [(Char, Char)] -> Char -> Char -> Char -> [(Char, Char)]
-typeIIWrapMoveHelper listNew tripCode ou letO letT
-   | length tripCode <= 2 = listNew 
-   | (snd(head tripCode) /= ou) && (snd(head tripCode) == snd(head(tail tripCode)) && ((fst(head tripCode) == letO) && (fst(head(tail tripCode)) == letT))) = listNew ++ tail (tail tripCode)
-   | otherwise = typeIIMoveHelper (listNew ++ [head tripCode]) (tail tripCode) ou letO letT
+-- typeIIWrapMoveHelper :: [(Char, Char)] -> [(Char, Char)] -> Char -> Char -> Char -> [(Char, Char)]
+-- typeIIWrapMoveHelper listNew tripCode ou letO letT
+--    | length tripCode <= 2 = listNew 
+--    | (snd(head tripCode) /= ou) && (snd(head tripCode) == snd(head(tail tripCode)) && ((fst(head tripCode) == letO) && (fst(head(tail tripCode)) == letT))) = listNew ++ tail (tail tripCode)
+--    | otherwise = typeIIMoveHelper (listNew ++ [head tripCode]) (tail tripCode) ou letO letT
 
-allButLast :: [(Char, Char)] -> [(Char, Char)] -> [(Char, Char)]
-allButLast listNew tripCode
-   | length tripCode <= 2 = listNew
-   | otherwise = allButLast (listNew ++ [head tripCode]) (tail tripCode)
+-- allButLast :: [(Char, Char)] -> [(Char, Char)] -> [(Char, Char)]
+-- allButLast listNew tripCode
+--    | length tripCode <= 2 = listNew
+--    | otherwise = allButLast (listNew ++ [head tripCode]) (tail tripCode)
+
+wrapDat :: [(Char, Char)] -> [(Char, Char)]
+wrapDat list = tail list ++ [head list]
 
 main :: IO ()
 main = do
